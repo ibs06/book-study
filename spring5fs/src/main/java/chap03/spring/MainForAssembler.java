@@ -1,9 +1,23 @@
 package chap03.spring;
 
+import chap03.config.AppConf1;
+import chap03.config.AppConf2;
+import chap03.config.AppConfImport;
+import chap03.config.AppCtx;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 public class MainForAssembler {
-    private static Assembler assembler = new Assembler();
+    //    private static Assembler assembler = new Assembler();
+// 스프링 : 범용 조립기
+    private static ApplicationContext ctx = null;
 
     public static void main(String[] args) {
+
+//        ctx = new AnnotationConfigApplicationContext(AppCtx.class);
+//        ctx = new AnnotationConfigApplicationContext(AppConf1.class, AppConf2.class);
+        ctx = new AnnotationConfigApplicationContext(AppConfImport.class);
+
         processNewCommand();
         processChangeCommand();
     }
@@ -11,7 +25,23 @@ public class MainForAssembler {
     private static void processNewCommand() {
         System.out.println("processNewCommand call");
 
-        MemberRegisterService reqSvc = assembler.getRegSvc();
+        //스프링 컨테이너가 @Configuration 어노테이션 설정 클래스도 스프링 빈으로 등록하는 지 확인
+//
+//        AppConf1 appConf1 = ctx.getBean(AppConf1.class);
+//        System.out.println("appConf1 !== null : " );
+//        System.out.println("appConf1 !== null : " );
+//        System.out.println(appConf1 != null );
+////        System.out.println(appConf1 != null );  결과 모두 true
+//
+//        AppConf2 appConf2 = ctx.getBean(AppConf2.class);
+//
+//        System.out.println("appConf2 !== null : " );
+//        System.out.println(appConf2 != null );
+////        System.out.println(appConf2 != null );  결과 모두 true
+
+//        MemberRegisterService reqSvc = assembler.getRegSvc();
+        MemberRegisterService reqSvc = ctx.getBean("memberRegisterService", MemberRegisterService.class);
+
 
         RegisterRequest req = new RegisterRequest();
         // 등록 케이스1
@@ -44,11 +74,24 @@ public class MainForAssembler {
         } catch (RuntimeException e) {
             System.out.println("등록실패:" + e);
         }
+
+        //멤버리스트 조회
+        System.out.println("멤버리스트 조회");
+        MemberListPrinter listPrinter = ctx.getBean("listPrinter", MemberListPrinter.class);
+        listPrinter.printAll();
+
+        //멤버 조회
+        System.out.println("멤버 조회");
+        MemberInfoPrinter infoPrinter = ctx.getBean("infoPrinter", MemberInfoPrinter.class);
+        infoPrinter.printMemberInfo("aaa@naver.com");
     }
 
 
     private static void processChangeCommand() {
-        ChangePasswordService pwdSvc = assembler.getPwdSvc();
+//        ChangePasswordService pwdSvc = assembler.getPwdSvc();
+        ChangePasswordService pwdSvc = ctx.getBean("changePasswordService", ChangePasswordService.class);
+
+
         try {
             pwdSvc.changePassword("aaa@naver.com", "1234", "1234");
             System.out.println("암호변경성공");
