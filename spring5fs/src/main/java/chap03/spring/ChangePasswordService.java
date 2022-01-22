@@ -1,9 +1,14 @@
 package chap03.spring;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
 public class ChangePasswordService {
+    @Autowired
     private MemberDao memberDao;
 
-    // 세터
+    // 세터 주입없이 @Autowired 변경
     public void setMemberDao(MemberDao memberDao) {
         this.memberDao = memberDao;
     }

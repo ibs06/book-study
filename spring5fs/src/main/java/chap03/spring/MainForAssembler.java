@@ -16,11 +16,11 @@ public class MainForAssembler {
 
 //        ctx = new AnnotationConfigApplicationContext(AppCtx.class);
 //        ctx = new AnnotationConfigApplicationContext(AppConf1.class, AppConf2.class);
-        ctx = new AnnotationConfigApplicationContext(AppConfImport.class);
+    ctx = new AnnotationConfigApplicationContext(AppConfImport.class);
 
-        processNewCommand();
-        processChangeCommand();
-    }
+    processNewCommand();
+    processChangeCommand();
+}
 
     private static void processNewCommand() {
         System.out.println("processNewCommand call");
@@ -40,7 +40,7 @@ public class MainForAssembler {
 ////        System.out.println(appConf2 != null );  결과 모두 true
 
 //        MemberRegisterService reqSvc = assembler.getRegSvc();
-        MemberRegisterService reqSvc = ctx.getBean("memberRegisterService", MemberRegisterService.class);
+        MemberRegisterService reqSvc = ctx.getBean( MemberRegisterService.class);
 
 
         RegisterRequest req = new RegisterRequest();
@@ -89,7 +89,7 @@ public class MainForAssembler {
 
     private static void processChangeCommand() {
 //        ChangePasswordService pwdSvc = assembler.getPwdSvc();
-        ChangePasswordService pwdSvc = ctx.getBean("changePasswordService", ChangePasswordService.class);
+        ChangePasswordService pwdSvc = ctx.getBean(ChangePasswordService.class);
 
 
         try {
